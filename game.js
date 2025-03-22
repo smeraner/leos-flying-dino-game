@@ -28,8 +28,8 @@ class Coconut {
         this.speed = 7;
     }
 
-    update() {
-        this.x += this.speed;
+    update(speedMultiplier = 1) {
+        this.x += this.speed * speedMultiplier;
     }
 
     draw(ctx) {
@@ -49,8 +49,8 @@ class EnemyDino {
         this.speed = 1.5; // Reduced speed
     }
 
-    update() {
-        this.x -= this.speed;
+    update(speedMultiplier = 1) {
+        this.x -= this.speed * speedMultiplier;
     }
 
     draw(ctx) {

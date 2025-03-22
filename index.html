@@ -25,8 +25,9 @@
         let enemies = [];
         let direction = { up: false, down: false, left: false, right: false };
         let lastEnemySpawn = 0;
-        let timeLeft = 300; // 5 minutes in seconds
+        let timeLeft = 180; // 3 minutes in seconds
         let gameRunning = true;
+        let speedMultiplier = 1; // Multiplier for speed adjustments
 
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
@@ -67,6 +68,11 @@
             if (timeLeft > 0) {
                 timeLeft--;
                 timeLeftElement.textContent = timeLeft;
+
+                // Increase speed every minute
+                if (timeLeft % 60 === 0) {
+                    speedMultiplier += 0.2; // Increase speed by 20% every minute
+                }
             } else {
                 gameRunning = false;
                 alert('Game Over! Your score: ' + score);
@@ -85,7 +91,7 @@
 
             // Update and draw coconuts
             coconuts.forEach((coconut, index) => {
-                coconut.update();
+                coconut.update(speedMultiplier); // Pass speed multiplier
                 if (coconut.x > canvas.width) {
                     coconuts.splice(index, 1);
                 } else {
@@ -101,7 +107,7 @@
 
             // Update and draw enemies
             enemies.forEach((enemy, index) => {
-                enemy.update();
+                enemy.update(speedMultiplier); // Pass speed multiplier
                 if (enemy.x + enemy.width < 0) {
                     enemies.splice(index, 1);
                 } else {
