@@ -46,7 +46,7 @@ class EnemyDino {
         this.height = 60;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.speed = 3;
+        this.speed = 1.5; // Reduced speed
     }
 
     update() {
