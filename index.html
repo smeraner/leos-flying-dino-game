@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flying Dino Game</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div>Score: <span id="score">0</span></div>
+    <script src="game.js"></script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+
+        let score = 0;
+        let player = new FlyingDino(50, canvas.height/2);
+        let coconuts = [];
+        let enemies = [];
+        let direction = { up: false, down: false, left: false, right: false };
+        let lastEnemySpawn = 0;
+
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowUp': direction.up = true; break;
+                case 'ArrowDown': direction.down = true; break;
+                case 'ArrowLeft': direction.left = true; break;
+                case 'ArrowRight': direction.right = true; break;
+                case ' ': coconuts.push(new Coconut(player.x + player.width, player.y + player.height/2)); break;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            switch(e.key) {
+                case 'ArrowUp': direction.up = false; break;
+                case 'ArrowDown': direction.down = false; break;
+                case 'ArrowLeft': direction.left = false; break;
+                case 'ArrowRight': direction.right = false; break;
+            }
+        });
+
+        function checkCollisions() {
+            coconuts.forEach((coconut, cIndex) => {
+                enemies.forEach((enemy, eIndex) => {
+                    if (coconut.x + coconut.radius > enemy.x &&
+                        coconut.x - coconut.radius < enemy.x + enemy.width &&
+                        coconut.y + coconut.radius > enemy.y &&
+                        coconut.y - coconut.radius < enemy.y + enemy.height) {
+                        enemies.splice(eIndex, 1);
+                        coconuts.splice(cIndex, 1);
+                        score += 10;
+                        scoreElement.textContent = score;
+                    }
+                });
+            });
+        }
+
+        function gameLoop() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw player
+            player.move(direction);
+            player.draw(ctx);
+
+            // Update and draw coconuts
+            coconuts.forEach((coconut, index) => {
+                coconut.update();
+                if (coconut.x > canvas.width) {
+                    coconuts.splice(index, 1);
+                } else {
+                    coconut.draw(ctx);
+                }
+            });
+
+            // Spawn enemies
+            if (Date.now() - lastEnemySpawn > 2000) {
+                enemies.push(new EnemyDino());
+                lastEnemySpawn = Date.now();
+            }
+
+            // Update and draw enemies
+            enemies.forEach((enemy, index) => {
+                enemy.update();
+                if (enemy.x + enemy.width < 0) {
+                    enemies.splice(index, 1);
+                } else {
+                    enemy.draw(ctx);
+                }
+            });
+
+            // Check collisions
+            checkCollisions();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
