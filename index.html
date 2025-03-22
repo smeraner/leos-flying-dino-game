@@ -11,11 +11,13 @@
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div>Score: <span id="score">0</span></div>
+    <div>Time Left: <span id="timeLeft">300</span> seconds</div>
     <script src="game.js"></script>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
+        const timeLeftElement = document.getElementById('timeLeft');
 
         let score = 0;
         let player = new FlyingDino(50, canvas.height/2);
@@ -23,6 +25,8 @@
         let enemies = [];
         let direction = { up: false, down: false, left: false, right: false };
         let lastEnemySpawn = 0;
+        let timeLeft = 300; // 5 minutes in seconds
+        let gameRunning = true;
 
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
@@ -59,7 +63,19 @@
             });
         }
 
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timeLeftElement.textContent = timeLeft;
+            } else {
+                gameRunning = false;
+                alert('Game Over! Your score: ' + score);
+            }
+        }
+
         function gameLoop() {
+            if (!gameRunning) return;
+
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -99,6 +115,7 @@
             requestAnimationFrame(gameLoop);
         }
 
+        setInterval(updateTimer, 1000); // Update timer every second
         gameLoop();
     </script>
 </body>
