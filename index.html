@@ -76,6 +76,9 @@
             } else {
                 gameRunning = false;
                 alert('Game Over! Your score: ' + score);
+                if (confirm('Möchten Sie ein neues Spiel starten?')) {
+                    location.reload(); // Reload the page to start a new game
+                }
             }
         }
 
