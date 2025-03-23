@@ -6,12 +6,38 @@
         canvas {
             border: 2px solid black;
         }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .control-button {
+            width: 50px;
+            height: 50px;
+            background-color: lightgray;
+            border: 1px solid black;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 50px;
+            font-size: 20px;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div>Score: <span id="score">0</span></div>
     <div>Time Left: <span id="timeLeft">300</span> seconds</div>
+    <div class="controls">
+        <div class="control-button" id="up">↑</div>
+        <div class="control-button" id="left">←</div>
+        <div class="control-button" id="shoot">●</div>
+        <div class="control-button" id="right">→</div>
+        <div class="control-button" id="down">↓</div>
+    </div>
     <script src="game.js"></script>
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -46,6 +72,23 @@
                 case 'ArrowLeft': direction.left = false; break;
                 case 'ArrowRight': direction.right = false; break;
             }
+        });
+
+        // Add event listeners for tablet controls
+        document.getElementById('up').addEventListener('mousedown', () => direction.up = true);
+        document.getElementById('up').addEventListener('mouseup', () => direction.up = false);
+
+        document.getElementById('down').addEventListener('mousedown', () => direction.down = true);
+        document.getElementById('down').addEventListener('mouseup', () => direction.down = false);
+
+        document.getElementById('left').addEventListener('mousedown', () => direction.left = true);
+        document.getElementById('left').addEventListener('mouseup', () => direction.left = false);
+
+        document.getElementById('right').addEventListener('mousedown', () => direction.right = true);
+        document.getElementById('right').addEventListener('mouseup', () => direction.right = false);
+
+        document.getElementById('shoot').addEventListener('click', () => {
+            coconuts.push(new Coconut(player.x + player.width, player.y + player.height / 2));
         });
 
         function checkCollisions() {
