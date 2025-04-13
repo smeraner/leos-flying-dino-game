@@ -15,8 +15,42 @@ class FlyingDino {
     }
 
     draw(ctx) {
+        // Main body - green
         ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.beginPath();
+        ctx.ellipse(this.x + this.width/2, this.y + this.height/2, this.width/2, this.height/3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head
+        ctx.beginPath();
+        ctx.ellipse(this.x + this.width * 0.8, this.y + this.height/3, this.width/4, this.height/6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Neck
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.width * 0.6, this.y + this.height/2);
+        ctx.lineTo(this.x + this.width * 0.7, this.y + this.height/3);
+        ctx.lineTo(this.x + this.width * 0.8, this.y + this.height/3);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Tail
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.width * 0.3, this.y + this.height/2);
+        ctx.lineTo(this.x, this.y + this.height * 0.4);
+        ctx.lineTo(this.x, this.y + this.height * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Legs
+        ctx.fillRect(this.x + this.width * 0.3, this.y + this.height/2, this.width/10, this.height/2);
+        ctx.fillRect(this.x + this.width * 0.7, this.y + this.height/2, this.width/10, this.height/2);
+        
+        // Eye
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.x + this.width * 0.85, this.y + this.height/3.5, 3, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
@@ -54,7 +88,41 @@ class EnemyDino {
     }
 
     draw(ctx) {
+        // Main body - red
         ctx.fillStyle = 'red';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.beginPath();
+        ctx.ellipse(this.x + this.width/2, this.y + this.height/2, this.width/2, this.height/3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head
+        ctx.beginPath();
+        ctx.ellipse(this.x + this.width * 0.2, this.y + this.height/3, this.width/4, this.height/6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Neck
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.width * 0.4, this.y + this.height/2);
+        ctx.lineTo(this.x + this.width * 0.3, this.y + this.height/3);
+        ctx.lineTo(this.x + this.width * 0.2, this.y + this.height/3);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Tail
+        ctx.beginPath();
+        ctx.moveTo(this.x + this.width * 0.7, this.y + this.height/2);
+        ctx.lineTo(this.x + this.width, this.y + this.height * 0.4);
+        ctx.lineTo(this.x + this.width, this.y + this.height * 0.6);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Legs
+        ctx.fillRect(this.x + this.width * 0.3, this.y + this.height/2, this.width/10, this.height/2);
+        ctx.fillRect(this.x + this.width * 0.7, this.y + this.height/2, this.width/10, this.height/2);
+        
+        // Eye
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.x + this.width * 0.15, this.y + this.height/3.5, 3, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
