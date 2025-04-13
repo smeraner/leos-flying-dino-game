@@ -2,9 +2,15 @@ class FlyingDino {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 80;
+        this.height = 80;
         this.speed = 5;
+        this.image = new Image();
+        this.image.src = 'flugdino.svg';
+        this.loaded = false;
+        this.image.onload = () => {
+            this.loaded = true;
+        };
     }
 
     move(direction) {
@@ -15,42 +21,24 @@ class FlyingDino {
     }
 
     draw(ctx) {
-        // Main body - green
-        ctx.fillStyle = 'green';
-        ctx.beginPath();
-        ctx.ellipse(this.x + this.width/2, this.y + this.height/2, this.width/2, this.height/3, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Head
-        ctx.beginPath();
-        ctx.ellipse(this.x + this.width * 0.8, this.y + this.height/3, this.width/4, this.height/6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Neck
-        ctx.beginPath();
-        ctx.moveTo(this.x + this.width * 0.6, this.y + this.height/2);
-        ctx.lineTo(this.x + this.width * 0.7, this.y + this.height/3);
-        ctx.lineTo(this.x + this.width * 0.8, this.y + this.height/3);
-        ctx.closePath();
-        ctx.fill();
-        
-        // Tail
-        ctx.beginPath();
-        ctx.moveTo(this.x + this.width * 0.3, this.y + this.height/2);
-        ctx.lineTo(this.x, this.y + this.height * 0.4);
-        ctx.lineTo(this.x, this.y + this.height * 0.6);
-        ctx.closePath();
-        ctx.fill();
-        
-        // Legs
-        ctx.fillRect(this.x + this.width * 0.3, this.y + this.height/2, this.width/10, this.height/2);
-        ctx.fillRect(this.x + this.width * 0.7, this.y + this.height/2, this.width/10, this.height/2);
-        
-        // Eye
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.arc(this.x + this.width * 0.85, this.y + this.height/3.5, 3, 0, Math.PI * 2);
-        ctx.fill();
+        if (this.loaded) {
+            // Speichere den aktuellen Kontext-Status
+            ctx.save();
+            
+            // Spiegle das Bild horizontal für den Spieler-Dino, damit er nach rechts schaut
+            ctx.translate(this.x + this.width, this.y);
+            ctx.scale(-1, 1);
+            
+            // Zeichne das gespiegelte SVG-Bild
+            ctx.drawImage(this.image, 0, 0, this.width, this.height);
+            
+            // Stelle den ursprünglichen Kontext-Status wieder her
+            ctx.restore();
+        } else {
+            // Fallback, falls das Bild noch nicht geladen ist
+            ctx.fillStyle = 'green';
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 }
 
@@ -76,11 +64,17 @@ class Coconut {
 
 class EnemyDino {
     constructor() {
-        this.width = 40;
+        this.width = 60;
         this.height = 60;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.speed = 1.5; // Reduced speed
+        this.speed = 1.5;
+        this.image = new Image();
+        this.image.src = 'flugdino.svg';
+        this.loaded = false;
+        this.image.onload = () => {
+            this.loaded = true;
+        };
     }
 
     update(speedMultiplier = 1) {
@@ -88,41 +82,13 @@ class EnemyDino {
     }
 
     draw(ctx) {
-        // Main body - red
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.ellipse(this.x + this.width/2, this.y + this.height/2, this.width/2, this.height/3, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Head
-        ctx.beginPath();
-        ctx.ellipse(this.x + this.width * 0.2, this.y + this.height/3, this.width/4, this.height/6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Neck
-        ctx.beginPath();
-        ctx.moveTo(this.x + this.width * 0.4, this.y + this.height/2);
-        ctx.lineTo(this.x + this.width * 0.3, this.y + this.height/3);
-        ctx.lineTo(this.x + this.width * 0.2, this.y + this.height/3);
-        ctx.closePath();
-        ctx.fill();
-        
-        // Tail
-        ctx.beginPath();
-        ctx.moveTo(this.x + this.width * 0.7, this.y + this.height/2);
-        ctx.lineTo(this.x + this.width, this.y + this.height * 0.4);
-        ctx.lineTo(this.x + this.width, this.y + this.height * 0.6);
-        ctx.closePath();
-        ctx.fill();
-        
-        // Legs
-        ctx.fillRect(this.x + this.width * 0.3, this.y + this.height/2, this.width/10, this.height/2);
-        ctx.fillRect(this.x + this.width * 0.7, this.y + this.height/2, this.width/10, this.height/2);
-        
-        // Eye
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.arc(this.x + this.width * 0.15, this.y + this.height/3.5, 3, 0, Math.PI * 2);
-        ctx.fill();
+        if (this.loaded) {
+            // Zeichne das SVG-Bild für den Gegner-Dino
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        } else {
+            // Fallback, falls das Bild noch nicht geladen ist
+            ctx.fillStyle = 'red';
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 }
