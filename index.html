@@ -51,9 +51,10 @@
         let enemies = [];
         let direction = { up: false, down: false, left: false, right: false };
         let lastEnemySpawn = 0;
-        let timeLeft = 180; // 3 minutes in seconds
+        let timeLeft = 120; // 2 minutes in seconds
         let gameRunning = true;
         let speedMultiplier = 1; // Multiplier for speed adjustments
+        let timerInterval; // Variable to store the timer interval
 
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
@@ -118,6 +119,7 @@
                 }
             } else {
                 gameRunning = false;
+                clearInterval(timerInterval); // Stop the timer
                 alert('Game Over! Your score: ' + score);
                 if (confirm('Möchten Sie ein neues Spiel starten?')) {
                     location.reload(); // Reload the page to start a new game
@@ -167,7 +169,7 @@
             requestAnimationFrame(gameLoop);
         }
 
-        setInterval(updateTimer, 1000); // Update timer every second
+        timerInterval = setInterval(updateTimer, 1000); // Update timer every second
         gameLoop();
     </script>
 </body>
